@@ -18,13 +18,6 @@ int main()
 	platform.setIcon(window.getSystemHandle());*/
 
 	Game game;
-
-	while (game.isRunning())
-	{
-
-		game.update();
-
-		game.render();
-	}
+	game.run();
 	return 0;
 }
