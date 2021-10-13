@@ -1,4 +1,4 @@
-#include "GameHeaders/Game.h"
+#include "GameHeaders/Game.hpp"
 
 //Constructors
 Game::Game() :
@@ -17,7 +17,7 @@ Game::Game() :
 		throw std::runtime_error("couldn't load the player from the file!");
 	}
 	player.setTexture(texture);
-	player.setScale(sf::Vector2f(5.0f, 5.0f));
+	player.setScale(sf::Vector2f(4.0f, 4.0f));
 	player.setPosition(300.0f, 300.0f);
 }
 

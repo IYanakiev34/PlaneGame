@@ -1,5 +1,14 @@
-#include "GameHeaders/Game.h"
+#include "GameHeaders/Game.hpp"
+#include "GameHeaders/ResourceHolder.hpp"
 #include "Platform/Platform.hpp"
+namespace Textures
+{
+enum ID
+{
+	Airplane,
+	Landscape
+};
+}
 
 int main()
 {
