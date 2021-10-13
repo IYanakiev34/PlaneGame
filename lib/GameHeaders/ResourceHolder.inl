@@ -7,6 +7,7 @@ void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string
 	{
 		throw std::runtime_error("Couldn't load from the file!");
 	}
+	insertResource(id, std::move(resource));
 }
 
 template <typename Resource, typename Identifier>
@@ -18,6 +19,7 @@ void ResourceHolder<Resource, Identifier>::load(Identifier id, const std::string
 	{
 		throw std::runtime_error("Couldn't load from the file!");
 	}
+	insertResource(id, std::move(resource));
 }
 
 template <typename Resource, typename Identifier>
