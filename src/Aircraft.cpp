@@ -1,27 +1,31 @@
 #include "GameHeaders/Aircraft.hpp"
 
-#include "ResourceIdentifiers.hpp"
+#include <GameHeaders/ResourceHolder.hpp>
 
-Textures::ID toTextureID(Aircraft::Type type)
+Aircraft::Aircraft(Type type, const TextureHolder& textures) :
+	mType(type)
+{
+	mSprite.setTexture(textures.get(toTextureID(mType)));
+	sf::FloatRect rect = mSprite.getLocalBounds();
+	mSprite.setOrigin(rect.width / 2, rect.height / 2);
+}
+
+void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(mSprite, states);
+}
+
+Textures::ID Aircraft::toTextureID(Aircraft::Type type)
 {
 	switch (type)
 	{
 		case Aircraft::Eagle:
 			return Textures::Eagle;
-		case: Aircraft::Raptor :
+
+		case Aircraft::Raptor:
 			return Textures::Raptor;
+		default:
+			break;
 	}
-}
-
-Aircraft::Aircraft(Type type, const TextureHolder& textures) :
-	_type(type),
-	_sprite(textures.get(toTextureID(type)))
-{
-	sf::FloatRect bounds = _sprite.getLocalBounds();
-	_sprite.setOrigin(bounds.width / 2f, bounds.height / 2f);
-}
-
-void Aircraft::draw(sf::RenderTarget& target, sf::RenderState state)
-{
-	target.draw(mSprite, state);
+	return Textures::Eagle;
 }

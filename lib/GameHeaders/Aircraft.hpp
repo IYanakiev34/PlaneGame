@@ -1,7 +1,8 @@
-#ifndef AIRCRAFT_HPP
-#define AIRCRAFT_HPP
+#ifndef AIRCRAFT_H
+#define AIRCRAFT_H
 
-#include "ResourceIdentifiers.hpp"
+#include "GameHeaders/Entity.hpp"
+#include "GameHeaders/ResourceIdentifiers.hpp"
 
 class Aircraft : public Entity
 {
@@ -11,12 +12,17 @@ public:
 		Eagle,
 		Raptor,
 	};
-	explicit Aircraft(Type type, const TextureHodler& textures);
-	virtual void draw(sf::RenderTarget& target, sf::RenderState state) const;
+
+public:
+	Aircraft(Type type, const TextureHolder& textures);
 
 private:
-	Type _type;
-	sf::Sprite _sprite;
-}
+	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	Textures::ID toTextureID(Type type);
+
+private:
+	Type mType;
+	sf::Sprite mSprite;
+};
 
 #endif

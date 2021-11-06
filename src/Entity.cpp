@@ -1,17 +1,21 @@
 #include "GameHeaders/Entity.hpp"
 
-void Entity::setVelocity(sf::Vector2f velocity)
-{
-	_velocity = velocity;
-}
-
 void Entity::setVelocity(float x, float y)
 {
-	_velocity.x = x;
-	_velocity.y = y;
+	m_velocity.x = x;
+	m_velocity.y = y;
+}
+void Entity::setVelocity(sf::Vector2f velocity)
+{
+	m_velocity = velocity;
 }
 
-sf::Vector2f Entity::getVelocity()
+sf::Vector2f Entity::getVelocity() const
 {
-	return _velocity;
+	return m_velocity;
+}
+
+void Entity::updateCurrent(sf::Time dt)
+{
+	move(m_velocity * dt.asSeconds());
 }

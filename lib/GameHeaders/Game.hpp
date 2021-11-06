@@ -1,26 +1,31 @@
-#ifndef GAME_HPP
-#define GAME_HPP
+#ifndef GAME_H
+#define GAME_H
+
 class Game
 {
 public:
-	// Constructors and destructors
 	Game();
-	virtual ~Game();
 	void run();
 
 private:
-	sf::RenderWindow window;
-	bool isMovingUp, isMovingDown, isMovingLeft, isMovingRight;
-	const sf::Time TimePerFrame;
-	const float PlayerSpeed;
-	sf::Texture texture;
-	sf::Sprite player;
+	void processEvents();
+	void update(sf::Time);
+	void render();
+
+	void handlePlayerInput(sf::Keyboard::Key key, bool state);
 
 private:
-	void processEvents();
-	void update(sf::Time deltaTime);
-	void render();
-	void handlePlayerMovement(sf::Keyboard::Key key, bool isPressed);
+	sf::RenderWindow m_window;
+	sf::Texture m_texture;
+	sf::Sprite m_player;
+
+private:
+	bool isMovingUp;
+	bool isMovingDown;
+	bool isMovingLeft;
+	bool isMovingRight;
+	float m_playerSpeed;
+	sf::Time TimePerFrame;
 };
 
 #endif

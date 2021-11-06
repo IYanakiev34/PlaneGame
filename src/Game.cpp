@@ -1,42 +1,35 @@
 #include "GameHeaders/Game.hpp"
 
-//Constructors
 Game::Game() :
-	window(sf::VideoMode(800, 600), "First Game", sf::Style::Titlebar | sf::Style::Close),
+	m_window(sf::VideoMode(640, 480), "SFML Application"),
+	m_player(),
 	isMovingUp(false),
 	isMovingDown(false),
 	isMovingLeft(false),
 	isMovingRight(false),
-	TimePerFrame(sf::seconds(1.0f / 60.0f)),
-	PlayerSpeed(100.0f),
-	texture(),
-	player()
+	m_playerSpeed(200.f),
+	TimePerFrame(sf::seconds(1.f / 60.f))
 {
-	if (!texture.loadFromFile("content/player.png"))
+	if (!m_texture.loadFromFile("content/eagle.png"))
 	{
-		throw std::runtime_error("couldn't load the player from the file!");
+		std::cout << "error loading from file!" << std::endl;
+		exit(1);
 	}
-	player.setTexture(texture);
-	player.setScale(sf::Vector2f(4.0f, 4.0f));
-	player.setPosition(300.0f, 300.0f);
-}
-
-Game::~Game()
-{
+	m_player.setTexture(m_texture);
+	m_player.setPosition(sf::Vector2f(100.f, 100.f));
 }
 
 void Game::run()
 {
 	sf::Clock clock;
-	sf::Time timeSinceLastFrame = sf::Time::Zero;
-
-	while (window.isOpen())
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	while (m_window.isOpen())
 	{
 		processEvents();
-		timeSinceLastFrame += clock.restart();
-		while (timeSinceLastFrame > TimePerFrame)
+		timeSinceLastUpdate += clock.restart();
+		while (timeSinceLastUpdate > TimePerFrame)
 		{
-			timeSinceLastFrame -= TimePerFrame;
+			timeSinceLastUpdate -= TimePerFrame;
 			processEvents();
 			update(TimePerFrame);
 		}
@@ -47,19 +40,18 @@ void Game::run()
 void Game::processEvents()
 {
 	sf::Event event;
-
-	while (window.pollEvent(event))
+	while (m_window.pollEvent(event))
 	{
 		switch (event.type)
 		{
 			case sf::Event::KeyPressed:
-				handlePlayerMovement(event.key.code, true);
+				handlePlayerInput(event.key.code, true);
 				break;
 			case sf::Event::KeyReleased:
-				handlePlayerMovement(event.key.code, false);
+				handlePlayerInput(event.key.code, false);
 				break;
 			case sf::Event::Closed:
-				window.close();
+				m_window.close();
 				break;
 			default:
 				break;
@@ -67,36 +59,45 @@ void Game::processEvents()
 	}
 }
 
+void Game::handlePlayerInput(sf::Keyboard::Key key, bool state)
+{
+	switch (key)
+	{
+		case sf::Keyboard::W:
+			isMovingUp = state;
+			break;
+		case sf::Keyboard::S:
+			isMovingDown = state;
+			break;
+		case sf::Keyboard::A:
+			isMovingLeft = state;
+			break;
+		case sf::Keyboard::D:
+			isMovingRight = state;
+			break;
+		default:
+			break;
+	}
+}
+
 void Game::update(sf::Time deltaTime)
 {
-	sf::Vector2f movement(0.0f, 0.0f);
+	sf::Vector2f movement(0.f, 0.f);
 	if (isMovingUp)
-		movement.y -= PlayerSpeed;
+		movement.y -= m_playerSpeed;
 	if (isMovingDown)
-		movement.y += PlayerSpeed;
-	if (isMovingLeft)
-		movement.x -= PlayerSpeed;
+		movement.y += m_playerSpeed;
 	if (isMovingRight)
-		movement.x += PlayerSpeed;
+		movement.x += m_playerSpeed;
+	if (isMovingLeft)
+		movement.x -= m_playerSpeed;
 
-	player.move(movement * deltaTime.asSeconds());
+	m_player.move(movement * deltaTime.asSeconds());
 }
 
 void Game::render()
 {
-	window.clear();
-	window.draw(player);
-	window.display();
-}
-
-void Game::handlePlayerMovement(sf::Keyboard::Key key, bool isPressed)
-{
-	if (key == sf::Keyboard::W)
-		isMovingUp = isPressed;
-	else if (key == sf::Keyboard::S)
-		isMovingDown = isPressed;
-	else if (key == sf::Keyboard::A)
-		isMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
-		isMovingRight = isPressed;
+	m_window.clear();
+	m_window.draw(m_player);
+	m_window.display();
 }

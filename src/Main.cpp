@@ -1,15 +1,5 @@
 #include "GameHeaders/Game.hpp"
-#include "GameHeaders/ResourceHolder.hpp"
 #include "Platform/Platform.hpp"
-namespace Textures
-{
-enum ID
-{
-	Airplane,
-	Landscape
-};
-}
-
 int main()
 {
 	util::Platform platform;
@@ -25,7 +15,6 @@ int main()
 	// Use the screenScalingFactor
 	window.create(sf::VideoMode(200.0f * screenScalingFactor, 200.0f * screenScalingFactor), "SFML works!");
 	platform.setIcon(window.getSystemHandle());*/
-
 	Game game;
 	game.run();
 	return 0;
