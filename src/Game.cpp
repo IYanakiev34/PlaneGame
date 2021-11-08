@@ -32,12 +32,6 @@ void Game::processEvents()
 	{
 		switch (event.type)
 		{
-			/*case sf::Event::KeyPressed:
-				handlePlayerInput(event.key.code, true);
-				break;
-			case sf::Event::KeyReleased:
-				handlePlayerInput(event.key.code, false);
-				break;*/
 			case sf::Event::Closed:
 				m_window.close();
 				break;
@@ -46,11 +40,6 @@ void Game::processEvents()
 		}
 	}
 }
-
-/*void Game::handlePlayerInput(sf::Keyboard::Key key, bool state)
-{
-
-}*/
 
 void Game::update(sf::Time deltaTime)
 {
