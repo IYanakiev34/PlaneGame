@@ -1,5 +1,5 @@
-#ifndef RESOURCEHOLDER_H
-#define RESOURCEHOLDER_H
+#ifndef RESOURCEHOLDER_HPP
+#define RESOURCEHOLDER_HPP
 
 template <typename Resource, typename Identifier>
 class ResourceHolder

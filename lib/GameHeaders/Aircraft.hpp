@@ -1,9 +1,9 @@
-#ifndef AIRCRAFT_H
-#define AIRCRAFT_H
+#ifndef AIRCRAFT_HPP
+#define AIRCRAFT_HPP
 
 #include "GameHeaders/Entity.hpp"
+#include "GameHeaders/ResourceHolder.hpp"
 #include "GameHeaders/ResourceIdentifiers.hpp"
-
 class Aircraft : public Entity
 {
 public:

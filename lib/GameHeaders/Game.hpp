@@ -1,7 +1,8 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_HPP
+#define GAME_HPP
 
-class Game
+#include "GameHeaders/World.hpp"
+class Game : private sf::NonCopyable
 {
 public:
 	Game();
@@ -12,19 +13,11 @@ private:
 	void update(sf::Time);
 	void render();
 
-	void handlePlayerInput(sf::Keyboard::Key key, bool state);
+	//void handlePlayerInput(sf::Keyboard::Key key, bool state);
 
 private:
 	sf::RenderWindow m_window;
-	sf::Texture m_texture;
-	sf::Sprite m_player;
-
-private:
-	bool isMovingUp;
-	bool isMovingDown;
-	bool isMovingLeft;
-	bool isMovingRight;
-	float m_playerSpeed;
+	World mWorld;
 	sf::Time TimePerFrame;
 };
 

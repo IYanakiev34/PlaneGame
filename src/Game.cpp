@@ -2,21 +2,9 @@
 
 Game::Game() :
 	m_window(sf::VideoMode(640, 480), "SFML Application"),
-	m_player(),
-	isMovingUp(false),
-	isMovingDown(false),
-	isMovingLeft(false),
-	isMovingRight(false),
-	m_playerSpeed(200.f),
+	mWorld(m_window),
 	TimePerFrame(sf::seconds(1.f / 60.f))
 {
-	if (!m_texture.loadFromFile("content/eagle.png"))
-	{
-		std::cout << "error loading from file!" << std::endl;
-		exit(1);
-	}
-	m_player.setTexture(m_texture);
-	m_player.setPosition(sf::Vector2f(100.f, 100.f));
 }
 
 void Game::run()
@@ -44,12 +32,12 @@ void Game::processEvents()
 	{
 		switch (event.type)
 		{
-			case sf::Event::KeyPressed:
+			/*case sf::Event::KeyPressed:
 				handlePlayerInput(event.key.code, true);
 				break;
 			case sf::Event::KeyReleased:
 				handlePlayerInput(event.key.code, false);
-				break;
+				break;*/
 			case sf::Event::Closed:
 				m_window.close();
 				break;
@@ -59,45 +47,20 @@ void Game::processEvents()
 	}
 }
 
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool state)
+/*void Game::handlePlayerInput(sf::Keyboard::Key key, bool state)
 {
-	switch (key)
-	{
-		case sf::Keyboard::W:
-			isMovingUp = state;
-			break;
-		case sf::Keyboard::S:
-			isMovingDown = state;
-			break;
-		case sf::Keyboard::A:
-			isMovingLeft = state;
-			break;
-		case sf::Keyboard::D:
-			isMovingRight = state;
-			break;
-		default:
-			break;
-	}
-}
+
+}*/
 
 void Game::update(sf::Time deltaTime)
 {
-	sf::Vector2f movement(0.f, 0.f);
-	if (isMovingUp)
-		movement.y -= m_playerSpeed;
-	if (isMovingDown)
-		movement.y += m_playerSpeed;
-	if (isMovingRight)
-		movement.x += m_playerSpeed;
-	if (isMovingLeft)
-		movement.x -= m_playerSpeed;
-
-	m_player.move(movement * deltaTime.asSeconds());
+	mWorld.update(deltaTime);
 }
 
 void Game::render()
 {
 	m_window.clear();
-	m_window.draw(m_player);
+	mWorld.draw();
+	m_window.setView(m_window.getDefaultView());
 	m_window.display();
 }

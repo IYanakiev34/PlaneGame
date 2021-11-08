@@ -15,7 +15,14 @@ int main()
 	// Use the screenScalingFactor
 	window.create(sf::VideoMode(200.0f * screenScalingFactor, 200.0f * screenScalingFactor), "SFML works!");
 	platform.setIcon(window.getSystemHandle());*/
-	Game game;
-	game.run();
+	try
+	{
+		Game game;
+		game.run();
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "\nEXCEPTION: " << e.what() << std::endl;
+	}
 	return 0;
 }
