@@ -20,7 +20,7 @@ private:
 	sf::RenderWindow m_window;
 	World mWorld;
 	sf::Time TimePerFrame;
-	Player m_player;
+	Player mPlayer;
 };
 
 #endif

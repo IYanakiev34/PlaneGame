@@ -1,14 +1,13 @@
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 
-#include "GameHeaders/SceneNode.hpp"
-
+#include "GameHeaders/Category.hpp"
 class SceneNode;
 
 struct Command
 {
 	Command();
-	std::function<void(SceneNode& node, sf::Time dt)> action;
+	std::function<void(SceneNode&, sf::Time)> action;
 	unsigned int category;
 };
 
