@@ -1,5 +1,18 @@
 # sfml-vscode-boilerplate
 
+## About the project
+This project uses sfml-boilerplate template in order to make it easy on the user in order to install and play the game.
+The Game is a simple 2D multiplayer shooter game, where you can control an aircraft. Although the game is simple it makes use
+of some more complex code structures such a scene graph for drawing the entities. A proper inheritance hierarchy, some sort of a 
+command pattern for the player input and so on.
+
+!!START NOTE
+At this point in time I have implemented the rendering and nearly the input meachinics for the player ( the idea is the player to be able
+to customize his keybinds) !! END NOTE
+
+
+
+
 A cross-platform [SFML](https://www.sfml-dev.org) 2.5.1 & C++17 build environment for [Visual Studio Code](https://code.visualstudio.com/)
 
 ---
