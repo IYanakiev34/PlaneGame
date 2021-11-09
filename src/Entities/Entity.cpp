@@ -24,14 +24,6 @@ void Entity::accelerate(float x, float y)
 {
 	sf::Vector2f velocity(x, y);
 	m_velocity += velocity;
-	if (m_velocity.x < -200)
-		m_velocity.x = -200;
-	if (m_velocity.x > 200)
-		m_velocity.x = 200;
-	if (m_velocity.y < -200)
-		m_velocity.y = -200;
-	if (m_velocity.y > 200)
-		m_velocity.y = 200;
 }
 
 void Entity::updateCurrent(sf::Time dt)
