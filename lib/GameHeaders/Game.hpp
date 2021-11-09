@@ -1,6 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "GameHeaders/Player.hpp"
 #include "GameHeaders/World.hpp"
 class Game : private sf::NonCopyable
 {
@@ -19,6 +20,7 @@ private:
 	sf::RenderWindow m_window;
 	World mWorld;
 	sf::Time TimePerFrame;
+	Player m_player;
 };
 
 #endif

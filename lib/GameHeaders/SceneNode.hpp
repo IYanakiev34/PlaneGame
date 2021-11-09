@@ -1,6 +1,11 @@
 #ifndef SCENENODE_H
 #define SCENENODE_H
 
+#include "GameHeaders/Category.hpp"
+#include "GameHeaders/Command.hpp"
+
+struct Command;
+
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
 {
 public:
@@ -16,6 +21,8 @@ public:
 
 	sf::Vector2f getWorldPosition() const;
 	sf::Transform getWorldTransform() const;
+	virtual unsigned int getCategory() const;
+	void onCommand(const Command& command, sf::Time dt);
 
 private:
 	virtual void updateCurrent(sf::Time dt);

@@ -6,12 +6,14 @@ SceneNode::SceneNode() :
 {
 }
 
+//Attach a child to the vector of children
 void SceneNode::attachChild(Ptr child)
 {
 	child->mParent = this;
 	mChildren.push_back(std::move(child));
 }
 
+// Detach a child from the vector of children
 SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 {
 	auto found = std::find_if(mChildren.begin(), mChildren.end(), [&](Ptr& p) { return p.get() == &node; });
@@ -23,17 +25,20 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 	return result;
 }
 
+// general update function
 void SceneNode::update(sf::Time dt)
 {
 	updateCurrent(dt);
 	updateChildren(dt);
 }
 
+// Update the current node
 void SceneNode::updateCurrent(sf::Time)
 {
 	// Do nothing by default
 }
 
+// Update the children of the node
 void SceneNode::updateChildren(sf::Time dt)
 {
 	for (const Ptr& child : mChildren)
@@ -42,6 +47,7 @@ void SceneNode::updateChildren(sf::Time dt)
 	}
 }
 
+// General draw method
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	// Apply transform of current node
@@ -52,11 +58,13 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	drawChildren(target, states);
 }
 
+// Draw the current node
 void SceneNode::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
 {
 	// Do nothing by default
 }
 
+// Drawing the children of the node
 void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	for (const Ptr& child : mChildren)
@@ -65,11 +73,13 @@ void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) 
 	}
 }
 
+// Gets the absolute world position
 sf::Vector2f SceneNode::getWorldPosition() const
 {
 	return getWorldTransform() * sf::Vector2f();
 }
 
+// Gets the world transform of an object
 sf::Transform SceneNode::getWorldTransform() const
 {
 	sf::Transform transform = sf::Transform::Identity;
@@ -78,4 +88,19 @@ sf::Transform SceneNode::getWorldTransform() const
 		transform = node->getTransform() * transform;
 
 	return transform;
+}
+
+// Get category of the scene node
+unsigned int SceneNode::getCategory() const
+{
+	return Category::Scene;
+}
+
+void SceneNode::onCommand(const Command& command, sf::Time dt)
+{
+	if (command.category & getCategory())
+		command.action(*this, dt);
+
+	for (Ptr& child : mChildren)
+		child->onCommand(command, dt);
 }

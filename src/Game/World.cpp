@@ -23,25 +23,6 @@ void World::update(sf::Time dt)
 	// Scroll the world
 	mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
 
-	sf::Vector2f movement(0.f, 0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		movement.y -= 150.f;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		movement.y += 150.f;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		movement.x -= 150.f;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		movement.x += 150.f;
-	}
-
-	mPlayerAircraft->move(movement * dt.asSeconds());
 	// Move the player sidewards (plane scouts follow the main aircraft)
 	sf::Vector2f position = mPlayerAircraft->getPosition();
 	sf::Vector2f velocity = mPlayerAircraft->getVelocity();
@@ -53,6 +34,9 @@ void World::update(sf::Time dt)
 		velocity.x = -velocity.x;
 		mPlayerAircraft->setVelocity(velocity);
 	}
+
+	while (!mCommandQueue.isEmpty())
+		mSceneGraph.onCommand(mCommandQueue.pop(), dt);
 
 	// Apply movements
 	mSceneGraph.update(dt);
@@ -97,4 +81,9 @@ void World::buildScene()
 	mPlayerAircraft = leader.get();
 	mPlayerAircraft->setPosition(mSpawnPosition);
 	mSceneLayers[Air]->attachChild(std::move(leader));
+}
+
+CommandQueue& World::getCommandQueue()
+{
+	return mCommandQueue;
 }

@@ -15,9 +15,10 @@ public:
 
 public:
 	Aircraft(Type type, const TextureHolder& textures);
+	virtual unsigned int getCategory() const override;
 
 private:
-	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 	Textures::ID toTextureID(Type type);
 
 private:

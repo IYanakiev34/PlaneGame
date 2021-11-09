@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include "GameHeaders/Aircraft.hpp"
+#include "GameHeaders/CommandQueue.hpp"
 #include "GameHeaders/ResourceHolder.hpp"
 #include "GameHeaders/ResourceIdentifiers.hpp"
 #include "GameHeaders/SceneNode.hpp"
@@ -10,6 +11,7 @@ class World : private sf::NonCopyable
 {
 public:
 	explicit World(sf::RenderWindow& window);
+	CommandQueue& getCommandQueue();
 	void update(sf::Time dt);
 	void draw();
 
@@ -37,6 +39,7 @@ private:
 	sf::Vector2f mSpawnPosition;
 	float mScrollSpeed;
 	Aircraft* mPlayerAircraft;
+	CommandQueue mCommandQueue;
 };
 
 #endif
