@@ -15,6 +15,9 @@ enum ID
 	Raptor,
 	Desert,
 	TitleScreen,
+	ButtonNormal,
+	ButtonSelected,
+	ButtonPressed,
 };
 }
 

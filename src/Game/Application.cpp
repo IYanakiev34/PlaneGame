@@ -1,4 +1,5 @@
 #include "GameHeaders/Application.hpp"
+#include "GameHeaders/SettingsState.hpp"
 #include <GameHeaders/GameState.hpp>
 #include <GameHeaders/MenuState.hpp>
 #include <GameHeaders/PauseState.hpp>
@@ -22,7 +23,11 @@ Application::Application() :
 {
 
 	mFonts.load(Fonts::Main, "content/Sansation.ttf");
+
 	mTextures.load(Textures::TitleScreen, "content/TitleScreen.jpg");
+	mTextures.load(Textures::ButtonNormal, "content/ButtonNormal.png");
+	mTextures.load(Textures::ButtonSelected, "content/ButtonSelected.png");
+	mTextures.load(Textures::ButtonPressed, "content/ButtonPressed.png");
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
@@ -105,4 +110,5 @@ void Application::registerStates()
 	mStateStack.registerState<MenuState>(States::Menu);
 	mStateStack.registerState<GameState>(States::Game);
 	mStateStack.registerState<PauseState>(States::Pause);
+	mStateStack.registerState<SettingsState>(States::Settings);
 }

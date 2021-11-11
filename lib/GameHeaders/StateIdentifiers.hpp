@@ -9,6 +9,7 @@ enum ID
 	Title,
 	Menu,
 	Game,
+	Settings,
 	Loading,
 	Pause
 };
