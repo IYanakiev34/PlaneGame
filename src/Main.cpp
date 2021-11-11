@@ -1,4 +1,4 @@
-#include "GameHeaders/Game.hpp"
+#include "GameHeaders/Application.hpp"
 #include "Platform/Platform.hpp"
 int main()
 {
@@ -17,8 +17,8 @@ int main()
 	platform.setIcon(window.getSystemHandle());*/
 	try
 	{
-		Game game;
-		game.run();
+		Application app;
+		app.run();
 	}
 	catch (std::exception& e)
 	{

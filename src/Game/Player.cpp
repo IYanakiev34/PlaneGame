@@ -6,10 +6,10 @@ struct AircraftMover
 		velocity(vx, vy)
 	{
 	}
-	void operator()(SceneNode& node, sf::Time dt)
+	void operator()(SceneNode& node, sf::Time)
 	{
 		Aircraft& aircraft = static_cast<Aircraft&>(node);
-		aircraft.accelerate(velocity * dt.asSeconds());
+		aircraft.accelerate(velocity);
 	}
 	sf::Vector2f velocity;
 };

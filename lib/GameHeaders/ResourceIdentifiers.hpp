@@ -14,6 +14,7 @@ enum ID
 	Eagle,
 	Raptor,
 	Desert,
+	TitleScreen,
 };
 }
 
