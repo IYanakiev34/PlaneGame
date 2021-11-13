@@ -1,5 +1,28 @@
 #include "GameHeaders/Entity.hpp"
 
+void Entity::repair(int points)
+{
+	mHitpoints += points;
+}
+void Entity::damage(int points)
+{
+	mHitpoints -= points;
+}
+
+void Entity::destroy()
+{
+	mHitpoints = 0;
+}
+
+int Entity::getHitpoints() const
+{
+	return mHitpoints;
+}
+
+bool Entity::isDestroyed() const
+{
+	return mHitpoints <= 0;
+}
 void Entity::setVelocity(float x, float y)
 {
 	m_velocity.x = x;

@@ -5,6 +5,7 @@
 Aircraft::Aircraft(Type type, const TextureHolder& textures) :
 	mType(type)
 {
+
 	mSprite.setTexture(textures.get(toTextureID(mType)));
 	sf::FloatRect rect = mSprite.getLocalBounds();
 	mSprite.setOrigin(rect.width / 2, rect.height / 2);

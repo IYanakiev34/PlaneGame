@@ -4,6 +4,7 @@
 #include "GameHeaders/Entity.hpp"
 #include "GameHeaders/ResourceHolder.hpp"
 #include "GameHeaders/ResourceIdentifiers.hpp"
+#include "GameHeaders/TextNode.hpp"
 class Aircraft : public Entity
 {
 public:
@@ -11,6 +12,8 @@ public:
 	{
 		Eagle,
 		Raptor,
+		Avenger,
+		TypeCount,
 	};
 
 public:

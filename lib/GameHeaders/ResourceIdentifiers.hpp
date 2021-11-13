@@ -13,6 +13,7 @@ enum ID
 {
 	Eagle,
 	Raptor,
+	Avenger,
 	Desert,
 	TitleScreen,
 	ButtonNormal,
