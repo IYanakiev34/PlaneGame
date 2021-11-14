@@ -7,7 +7,7 @@ of some more complex code structures such a scene graph for drawing the entities
 command pattern for the player input and so on.
 
 !!START NOTE
-At this point in time I have implemented the rendering and the input meachinics for the player (player can customize bindings). Implemented state and state stack now all I need is to integrate the functionality to an Application class !! END NOTE
+Application is now working. State stack integrated ,starting to work on game mechanics.  !! END NOTE
 
 
 
