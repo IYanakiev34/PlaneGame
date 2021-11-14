@@ -1,5 +1,16 @@
 #include "GameHeaders/Util.hpp"
 
+namespace
+{
+std::default_random_engine createRandomEngine()
+{
+	auto seed = static_cast<unsigned long>(std::time(nullptr));
+	return std::default_random_engine(seed);
+}
+
+auto RandomEngine = createRandomEngine();
+}
+
 std::string toString(sf::Keyboard::Key key)
 {
 #define BOOK_KEYTOSTRING_CASE(KEY) \
@@ -126,4 +137,30 @@ void centerOrigin(sf::Text& text)
 {
 	sf::FloatRect bounds = text.getLocalBounds();
 	text.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+}
+
+float toDegree(float radian)
+{
+	return 180 / 3.14159 * radian;
+}
+
+float toRadian(float degree)
+{
+	return 3.1415 / 180 * degree;
+}
+
+int randomInt(int exclusiveMax)
+{
+	std::uniform_int_distribution<> distr(0, exclusiveMax - 1);
+	return distr(RandomEngine);
+}
+
+float vectorLength(sf::Vector2f vec)
+{
+	return std::sqrt(vec.x * vec.x + vec.y * vec.y);
+}
+
+sf::Vector2f unitVector(sf::Vector2f vec)
+{
+	return vec / vectorLength(vec);
 }

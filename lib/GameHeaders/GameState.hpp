@@ -7,7 +7,6 @@
 
 class GameState : public State
 {
-
 public:
 	GameState(StateStack& stack, Context context);
 

@@ -1,5 +1,7 @@
 #include "GameHeaders/SettingsState.hpp"
+#include "GameHeaders/ResourceHolder.hpp"
 #include "GameHeaders/Util.hpp"
+
 SettingsState::SettingsState(StateStack& stack, Context context) :
 	State(stack, context),
 	mGUIContainer()
@@ -7,20 +9,19 @@ SettingsState::SettingsState(StateStack& stack, Context context) :
 	mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));
 
 	// Build key binding buttons and labels
-	addButtonLabel(Player::MoveLeft, 150.f, "Move Left", context);
-	addButtonLabel(Player::MoveRight, 200.f, "Move Right", context);
-	addButtonLabel(Player::MoveUp, 250.f, "Move Up", context);
-	addButtonLabel(Player::MoveDown, 300.f, "Move Down", context);
+	addButtonLabel(Player::MoveLeft, 300.f, "Move Left", context);
+	addButtonLabel(Player::MoveRight, 350.f, "Move Right", context);
+	addButtonLabel(Player::MoveUp, 400.f, "Move Up", context);
+	addButtonLabel(Player::MoveDown, 450.f, "Move Down", context);
+	addButtonLabel(Player::Fire, 500.f, "Fire", context);
+	addButtonLabel(Player::LaunchMissile, 550.f, "Missile", context);
 
 	updateLabels();
 
-	auto backButton = std::make_shared<GUI::Button>(*context.textures, *context.fonts);
-	backButton->setPosition(80.f, 375.f);
+	auto backButton = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
+	backButton->setPosition(80.f, 620.f);
 	backButton->setText("Back");
-	backButton->setCallback([this]() {
-		requestStackPop();
-		requestStackPush(States::Menu);
-	});
+	backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
 
 	mGUIContainer.pack(backButton);
 }
@@ -79,7 +80,7 @@ void SettingsState::updateLabels()
 
 void SettingsState::addButtonLabel(Player::Action action, float y, const std::string& text, Context context)
 {
-	mBindingButtons[action] = std::make_shared<GUI::Button>(*context.textures, *context.fonts);
+	mBindingButtons[action] = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
 	mBindingButtons[action]->setPosition(80.f, y);
 	mBindingButtons[action]->setText(text);
 	mBindingButtons[action]->setToggle(true);

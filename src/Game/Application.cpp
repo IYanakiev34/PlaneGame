@@ -1,4 +1,5 @@
 #include "GameHeaders/Application.hpp"
+#include "GameHeaders/GameOver.hpp"
 #include "GameHeaders/SettingsState.hpp"
 #include <GameHeaders/GameState.hpp>
 #include <GameHeaders/MenuState.hpp>
@@ -11,7 +12,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application() :
-	mWindow(sf::VideoMode(640, 480), "Planes", sf::Style::Close),
+	mWindow(sf::VideoMode(1024, 768), "Gameplay", sf::Style::Close),
 	mTextures(),
 	mFonts(),
 	mPlayer(),
@@ -19,8 +20,8 @@ Application::Application() :
 	mStatisticsText(),
 	mStatisticsUpdateTime(),
 	mStatisticsNumFrames(0)
-
 {
+	mWindow.setKeyRepeatEnabled(false);
 
 	mFonts.load(Fonts::Main, "content/Sansation.ttf");
 
@@ -91,6 +92,7 @@ void Application::render()
 
 	mWindow.display();
 }
+
 void Application::updateStatistics(sf::Time dt)
 {
 	mStatisticsUpdateTime += dt;
@@ -111,4 +113,5 @@ void Application::registerStates()
 	mStateStack.registerState<GameState>(States::Game);
 	mStateStack.registerState<PauseState>(States::Pause);
 	mStateStack.registerState<SettingsState>(States::Settings);
+	mStateStack.registerState<GameOverState>(States::GameOver);
 }

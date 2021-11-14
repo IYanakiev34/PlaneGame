@@ -1,11 +1,54 @@
 #include "GameHeaders/Entity.hpp"
 
+Entity::Entity(int hitpoints) :
+	mVelocity(),
+	mHitpoints(hitpoints)
+{
+}
+
+void Entity::setVelocity(sf::Vector2f velocity)
+{
+	mVelocity = velocity;
+}
+
+void Entity::setVelocity(float vx, float vy)
+{
+	mVelocity.x = vx;
+	mVelocity.y = vy;
+}
+
+sf::Vector2f Entity::getVelocity() const
+{
+	return mVelocity;
+}
+
+void Entity::accelerate(sf::Vector2f velocity)
+{
+	mVelocity += velocity;
+}
+
+void Entity::accelerate(float vx, float vy)
+{
+	mVelocity.x += vx;
+	mVelocity.y += vy;
+}
+
+int Entity::getHitpoints() const
+{
+	return mHitpoints;
+}
+
 void Entity::repair(int points)
 {
+	assert(points > 0);
+
 	mHitpoints += points;
 }
+
 void Entity::damage(int points)
 {
+	assert(points > 0);
+
 	mHitpoints -= points;
 }
 
@@ -14,42 +57,12 @@ void Entity::destroy()
 	mHitpoints = 0;
 }
 
-int Entity::getHitpoints() const
-{
-	return mHitpoints;
-}
-
 bool Entity::isDestroyed() const
 {
 	return mHitpoints <= 0;
 }
-void Entity::setVelocity(float x, float y)
-{
-	m_velocity.x = x;
-	m_velocity.y = y;
-}
-void Entity::setVelocity(sf::Vector2f velocity)
-{
-	m_velocity = velocity;
-}
 
-sf::Vector2f Entity::getVelocity() const
+void Entity::updateCurrent(sf::Time dt, CommandQueue&)
 {
-	return m_velocity;
-}
-
-void Entity::accelerate(sf::Vector2f velocity)
-{
-	m_velocity += velocity;
-}
-
-void Entity::accelerate(float x, float y)
-{
-	sf::Vector2f velocity(x, y);
-	m_velocity += velocity;
-}
-
-void Entity::updateCurrent(sf::Time dt)
-{
-	move(m_velocity * dt.asSeconds());
+	move(mVelocity * dt.asSeconds());
 }

@@ -1,4 +1,9 @@
 #include "GameHeaders/Player.hpp"
+#include "GameHeaders/Aircraft.hpp"
+#include "GameHeaders/CommandQueue.hpp"
+#include "GameHeaders/ForEach.hpp"
+
+using namespace std::placeholders;
 
 struct AircraftMover
 {
@@ -6,27 +11,32 @@ struct AircraftMover
 		velocity(vx, vy)
 	{
 	}
-	void operator()(SceneNode& node, sf::Time)
+
+	void operator()(Aircraft& aircraft, sf::Time) const
 	{
-		Aircraft& aircraft = static_cast<Aircraft&>(node);
-		aircraft.accelerate(velocity);
+		aircraft.accelerate(velocity * aircraft.getMaxSpeed());
 	}
+
 	sf::Vector2f velocity;
 };
 
-Player::Player()
+Player::Player() :
+	mCurrentMissionStatus(MissionRunning)
 {
-	// initial key bindings
-	mKeyBindings[sf::Keyboard::Left] = MoveLeft;
-	mKeyBindings[sf::Keyboard::Right] = MoveRight;
-	mKeyBindings[sf::Keyboard::Up] = MoveUp;
-	mKeyBindings[sf::Keyboard::Down] = MoveDown;
+	// Set initial key bindings
+	mKeyBinding[sf::Keyboard::Left] = MoveLeft;
+	mKeyBinding[sf::Keyboard::Right] = MoveRight;
+	mKeyBinding[sf::Keyboard::Up] = MoveUp;
+	mKeyBinding[sf::Keyboard::Down] = MoveDown;
+	mKeyBinding[sf::Keyboard::Space] = Fire;
+	mKeyBinding[sf::Keyboard::M] = LaunchMissile;
 
+	// Set initial action bindings
 	initializeActions();
 
 	// Assign all categories to player's aircraft
-	for (auto& pair : mActionBindings)
-		pair.second.category = Category::PlayerAircraft;
+	FOREACH(auto& pair, mActionBinding)
+	pair.second.category = Category::PlayerAircraft;
 }
 
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
@@ -34,61 +44,81 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 	if (event.type == sf::Event::KeyPressed)
 	{
 		// Check if pressed key appears in key binding, trigger command if so
-		auto found = mKeyBindings.find(event.key.code);
-		if (found != mKeyBindings.end() && !isRealTimeAction(found->second))
-			commands.push(mActionBindings[found->second]);
+		auto found = mKeyBinding.find(event.key.code);
+		if (found != mKeyBinding.end() && !isRealtimeAction(found->second))
+			commands.push(mActionBinding[found->second]);
 	}
 }
 
-void Player::hanldeRealTimeInput(CommandQueue& commands)
+void Player::handleRealtimeInput(CommandQueue& commands)
 {
-	for (auto pair : mKeyBindings)
+	// Traverse all assigned keys and check if they are pressed
+	FOREACH(auto pair, mKeyBinding)
 	{
 		// If key is pressed, lookup action and trigger corresponding command
-		if (sf::Keyboard::isKeyPressed(pair.first) && isRealTimeAction(pair.second))
-			commands.push(mActionBindings[pair.second]);
+		if (sf::Keyboard::isKeyPressed(pair.first) && isRealtimeAction(pair.second))
+			commands.push(mActionBinding[pair.second]);
 	}
 }
 
 void Player::assignKey(Action action, sf::Keyboard::Key key)
 {
-	for (auto itr = mKeyBindings.begin(); itr != mKeyBindings.end(); itr++)
+	// Remove all keys that already map to action
+	for (auto itr = mKeyBinding.begin(); itr != mKeyBinding.end();)
 	{
 		if (itr->second == action)
-			mKeyBindings.erase(itr);
+			mKeyBinding.erase(itr++);
+		else
+			++itr;
 	}
 
-	mKeyBindings[key] = action;
+	// Insert new binding
+	mKeyBinding[key] = action;
 }
 
 sf::Keyboard::Key Player::getAssignedKey(Action action) const
 {
-	for (auto p : mKeyBindings)
-		if (p.second == action)
-			return p.first;
+	FOREACH(auto pair, mKeyBinding)
+	{
+		if (pair.second == action)
+			return pair.first;
+	}
 
 	return sf::Keyboard::Unknown;
 }
 
+void Player::setMissionStatus(MissionStatus status)
+{
+	mCurrentMissionStatus = status;
+}
+
+Player::MissionStatus Player::getMissionStatus() const
+{
+	return mCurrentMissionStatus;
+}
+
 void Player::initializeActions()
 {
-	const float playerSpeed = 200.f;
-
-	mActionBindings[MoveLeft].action = AircraftMover(-playerSpeed, 0.f);
-	mActionBindings[MoveRight].action = AircraftMover(+playerSpeed, 0.f);
-	mActionBindings[MoveUp].action = AircraftMover(0.f, -playerSpeed);
-	mActionBindings[MoveDown].action = AircraftMover(0.f, +playerSpeed);
+	mActionBinding[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-1, 0));
+	mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+1, 0));
+	mActionBinding[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0, -1));
+	mActionBinding[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0, +1));
+	mActionBinding[Fire].action = derivedAction<Aircraft>([](Aircraft& a, sf::Time) { a.fire(); });
+	mActionBinding[LaunchMissile].action = derivedAction<Aircraft>([](Aircraft& a, sf::Time) { a.launchMissile(); });
 }
-bool Player::isRealTimeAction(Action action)
+
+bool Player::isRealtimeAction(Action action)
 {
 	switch (action)
 	{
 		case MoveLeft:
 		case MoveRight:
-		case MoveUp:
 		case MoveDown:
+		case MoveUp:
+		case Fire:
 			return true;
+
 		default:
 			return false;
-	};
+	}
 }

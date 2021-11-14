@@ -14,18 +14,21 @@ public:
 	typedef std::shared_ptr<Button> Ptr;
 	typedef std::function<void()> Callback;
 
-	Button(const TextureHolder& textures, const FontHolder& holder);
+public:
+	Button(const FontHolder& fonts, const TextureHolder& textures);
+
+	void setCallback(Callback callback);
+	void setText(const std::string& text);
+	void setToggle(bool flag);
 
 	virtual bool isSelectable() const;
-	virtual void handleEvent(const sf::Event& event);
 	virtual void select();
 	virtual void deselect();
+
 	virtual void activate();
 	virtual void deactivate();
 
-	void setToggle(bool flad);
-	void setText(const std::string& text);
-	void setCallback(Callback callback);
+	virtual void handleEvent(const sf::Event& event);
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -39,6 +42,7 @@ private:
 	sf::Text mText;
 	bool mIsToggle;
 };
+
 }
 
 #endif

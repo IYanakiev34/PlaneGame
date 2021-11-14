@@ -9,6 +9,7 @@ enum ID
 	Title,
 	Menu,
 	Game,
+	GameOver,
 	Settings,
 	Loading,
 	Pause
